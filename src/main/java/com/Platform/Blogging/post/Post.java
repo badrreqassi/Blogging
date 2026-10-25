@@ -6,27 +6,21 @@ import jakarta.persistence.*;
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
+    @Column(nullable = false, length = 150)
     private String title;
-    @Column(columnDefinition = "TEXT")
+    @Column(nullable = false,columnDefinition = "TEXT")
     private String content;
+    @Column(nullable = false)
     private String category;
 
     public Post() {
     }
 
-    public Post(String title, String category, String content) {
+    public Post(String title, String content,  String category) {
         this.title = title;
-        this.category = category;
         this.content = content;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
+        this.category = category;
     }
 
     public String getTitle() {
