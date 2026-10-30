@@ -10,17 +10,16 @@ import java.util.Set;
 public class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long id;
     @Column(nullable = false, unique = true)
     private String name;
     private Boolean active;
-    @ManyToMany(mappedBy = "tags")
-    private Set<Post>  posts;
+
 
     protected Tag() {}
 
     public Tag(String name, Boolean active) {
-        this.name = name;
+        this.name = name.toUpperCase().trim();
         this.active = active;
     }
 
@@ -36,18 +35,13 @@ public class Tag {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public Long getId() {
-        return Id;
+        return id;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Tag tag = (Tag) o;
+        if (!(o instanceof Tag tag)) return false;
         return Objects.equals(getName(), tag.getName());
     }
 
