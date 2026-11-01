@@ -1,10 +1,9 @@
 package com.Platform.Blogging.tag;
 
-import com.Platform.Blogging.post.Post;
 import jakarta.persistence.*;
 
+import java.util.Locale;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 public class Tag {
@@ -20,7 +19,7 @@ public class Tag {
     protected Tag() {}
 
     public Tag(String name, Boolean active) {
-        this.name = name.toUpperCase().trim();
+        this.name = name.toUpperCase(Locale.ROOT).trim();
         this.active = active;
     }
 
