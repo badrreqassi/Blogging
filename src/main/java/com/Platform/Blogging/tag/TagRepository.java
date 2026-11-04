@@ -8,5 +8,5 @@ import java.util.Set;
 @Repository
 public interface TagRepository extends JpaRepository<Tag , Long> {
 
-    List<Tag> findByNameIn(Set<String> names);
+    List<Tag> findByNameIgnoreCaseIn(Set<String> names);
 }

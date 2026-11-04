@@ -8,10 +8,8 @@ import java.util.List;
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
 
-    List<Post> findByTitleContainingIgnoreCaseOrCategoryContainingIgnoreCaseOrContentContainingIgnoreCaseOrderByCreatedAtDesc(String title, String category , String content);
-
-    @Query("select p from Post p where p.title LIKE %:title% OR p.category LIKE %:category% OR p.content LIKE %:content% ORDER BY p.createdAt")
-    List<Post> findByTitleOrCategoryOrContent(String title, String category , String content);
+    @Query("select p from Post p where p.title LIKE %:term% OR p.category LIKE %:term% OR p.content LIKE %:term% ORDER BY p.createdAt")
+    List<Post> findByTitleOrCategoryOrContent(String term);
 
 
 }
