@@ -5,10 +5,7 @@ import com.Platform.Blogging.tag.TagRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -46,7 +43,7 @@ public class PostService {
     // trim the names and make them upperCase
     private Set<String> normalizeTagNames(Set<String> names){
         if(names== null || names.isEmpty() ) return new HashSet<>();
-        return names.stream().filter(c-> !c.isEmpty()).map(String::toUpperCase).map(String::trim).collect(Collectors.toSet());
+        return names.stream().map(String::trim).filter(c-> !c.isEmpty()).map(name -> name.toUpperCase(Locale.ROOT)).collect(Collectors.toSet());
     }
     private Set<Tag> findTagsNamesOrCreateNewOnes(Set<String> names){
         if(names.isEmpty()) return new HashSet<>();
