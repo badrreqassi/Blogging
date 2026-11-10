@@ -10,6 +10,4 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("select p from Post p where p.title LIKE %:term% OR p.category LIKE %:term% OR p.content LIKE %:term% ORDER BY p.createdAt")
     List<Post> findByTitleOrCategoryOrContent(String term);
-
-
 }

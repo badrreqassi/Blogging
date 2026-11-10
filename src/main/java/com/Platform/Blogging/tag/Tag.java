@@ -18,9 +18,9 @@ public class Tag {
 
     protected Tag() {}
 
-    public Tag(String name, Boolean active) {
+    public Tag(String name) {
         this.name = name.toUpperCase(Locale.ROOT).trim();
-        this.active = active;
+        this.active = true;
     }
 
     public Boolean getActive() {
