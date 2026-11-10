@@ -24,15 +24,16 @@ public class PostService {
     @Transactional(readOnly = true)
     public PostResponse getPost(Long id)  {
         return  this.postRepository.findById(id).map(PostResponse :: from)
-                .orElseThrow(()-> new PostNotFoundException(" Post with id "+ id + " are not found"));
+                .orElseThrow(()-> new PostNotFoundException(" Post with id "+ id +" are not found"));
 
     }
     @Transactional(readOnly = true)
-    public List<PostResponse> getAllPosts(String term)  {
-        if (term!= null) {
-            return this.postRepository.findByTitleOrCategoryOrContent(term.trim()).stream().map(PostResponse ::from).toList();
+    public List<PostResponse> getAllPosts(String term) {
+        if(term == null || term.isBlank()){
+         return this.postRepository.findAll().stream().map(PostResponse::from).toList();
         }
-        return new ArrayList<>();
+        return this.postRepository.findByTitleOrCategoryOrContent(term.trim()).stream().map(PostResponse ::from).toList();
+
     }
     @Transactional()
     public PostResponse createPost(PostRequest request){
@@ -44,7 +45,7 @@ public class PostService {
     }
     // trim the names and make them upperCase
     private Set<String> normalizeTagNames(Set<String> names){
-        if(names.isEmpty()) return new HashSet<>();
+        if(names== null || names.isEmpty() ) return new HashSet<>();
         return names.stream().filter(c-> !c.isEmpty()).map(String::toUpperCase).map(String::trim).collect(Collectors.toSet());
     }
     private Set<Tag> findTagsNamesOrCreateNewOnes(Set<String> names){
