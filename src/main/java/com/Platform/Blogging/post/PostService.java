@@ -5,6 +5,7 @@ import com.Platform.Blogging.tag.TagRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -13,8 +14,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class PostService {
-    public final PostRepository postRepository;
-    public final TagRepository tagRepository;
+    private final PostRepository postRepository;
+    private final TagRepository tagRepository;
 
     public PostService(PostRepository postRepository, TagRepository tagRepository){
         this.postRepository = postRepository;
@@ -22,29 +23,33 @@ public class PostService {
     }
     @Transactional(readOnly = true)
     public PostResponse getPost(Long id)  {
-        return  this.postRepository.findById(id).map(PostResponse :: from).orElseThrow(()-> new PostNotFoundException(" Post with id "+ id + " are not found"));
+        return  this.postRepository.findById(id).map(PostResponse :: from)
+                .orElseThrow(()-> new PostNotFoundException(" Post with id "+ id + " are not found"));
 
     }
     @Transactional(readOnly = true)
     public List<PostResponse> getAllPosts(String term)  {
-        return this.postRepository.findByTitleOrCategoryOrContent(term).stream().map(PostResponse ::from).toList();
+        if (term!= null) {
+            return this.postRepository.findByTitleOrCategoryOrContent(term.trim()).stream().map(PostResponse ::from).toList();
+        }
+        return new ArrayList<>();
     }
     @Transactional()
     public PostResponse createPost(PostRequest request){
         Set<String> names = this.normalizeTagNames(request.tags());
         Set<Tag> tags = this.findTagsNamesOrCreateNewOnes(names) ;
         Post save = new Post(request.title(),request.content(),request.category(),tags);
-       return  PostResponse.from(save);
+        return  PostResponse.from(this.postRepository.save(save));
 
     }
     // trim the names and make them upperCase
     private Set<String> normalizeTagNames(Set<String> names){
-        return names.stream().map(String::toUpperCase).map(String::trim).collect(Collectors.toSet());
-
+        if(names.isEmpty()) return new HashSet<>();
+        return names.stream().filter(c-> !c.isEmpty()).map(String::toUpperCase).map(String::trim).collect(Collectors.toSet());
     }
     private Set<Tag> findTagsNamesOrCreateNewOnes(Set<String> names){
         if(names.isEmpty()) return new HashSet<>();
-         Set<Tag> existing = this.tagRepository.findByNameIgnoreCaseIn(names);
+         Set<Tag> existing = this.tagRepository.findByNameIn(names);
          Set<String> existingNames = existing.stream()
                 .map(Tag::getName)
                 .collect(Collectors.toSet());
