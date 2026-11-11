@@ -12,7 +12,7 @@ public class Tag {
     private Long id;
     @Column(nullable = false, unique = true)
     private String name;
-    @Column(nullable = false)
+    @Column(nullable = true)
     private Boolean active;
 
 
@@ -20,8 +20,7 @@ public class Tag {
 
     public Tag(String name) {
         this.name = name.toUpperCase(Locale.ROOT).trim();
-        this.active = true;
-    }
+     }
 
     public Boolean getActive() {
         return active;
