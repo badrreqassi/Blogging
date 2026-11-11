@@ -8,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static org.springframework.http.RequestEntity.delete;
+
 
 @Service
 public class PostService {
@@ -49,9 +51,10 @@ public class PostService {
          updatePost.setTags(tags);
          return PostResponse.from(postRepository.saveAndFlush(updatePost));
     }
+    @Transactional
     public void deletePost(Long id){
-        Post updatePost = this.findPostOrThrow(id);
-        this.postRepository.deleteById(updatePost.getId());
+        Post deletePost = this.findPostOrThrow(id);
+        this.postRepository.delete(deletePost);
 
     }
 
