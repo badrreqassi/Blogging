@@ -27,7 +27,7 @@ public class PostService {
     @Transactional(readOnly = true)
     public List<PostResponse> getAllPosts(String term) {
         if(term == null || term.isBlank()){
-         return this.postRepository.findAll((Pageable) postRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"))).stream().map(PostResponse::from).toList();
+         return this.postRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt")).stream().map(PostResponse::from).toList();
         }
         return this.postRepository.findByTitleOrCategoryOrContent(term.trim()).stream().map(PostResponse ::from).toList();
 
