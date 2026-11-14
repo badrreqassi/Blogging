@@ -2,6 +2,8 @@ package com.Platform.Blogging.post;
 
 import com.Platform.Blogging.tag.Tag;
 import com.Platform.Blogging.tag.TagRepository;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +27,7 @@ public class PostService {
     @Transactional(readOnly = true)
     public List<PostResponse> getAllPosts(String term) {
         if(term == null || term.isBlank()){
-         return this.postRepository.findAll().stream().map(PostResponse::from).sorted(Comparator.comparing(PostResponse::createdAt)).toList();
+         return this.postRepository.findAll((Pageable) postRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"))).stream().map(PostResponse::from).toList();
         }
         return this.postRepository.findByTitleOrCategoryOrContent(term.trim()).stream().map(PostResponse ::from).toList();
 
