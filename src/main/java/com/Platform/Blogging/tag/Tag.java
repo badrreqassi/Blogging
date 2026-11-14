@@ -12,8 +12,8 @@ public class Tag {
     private Long id;
     @Column(nullable = false, unique = true)
     private String name;
-    @Column(nullable = true)
-    private Boolean active;
+    @Column(nullable = false, columnDefinition = "boolean default true")
+    private Boolean active = true;
 
 
     protected Tag() {}
