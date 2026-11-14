@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 
-@RequestMapping("/blogging")
+@RequestMapping("/posts")
 @RestController
 public class PostController {
     private final PostService postService;
@@ -20,7 +20,7 @@ public class PostController {
         this.postService = postService;
      }
 
-     @PostMapping("/create")
+     @PostMapping
     public ResponseEntity<PostResponse> createPost(@Valid @RequestBody PostRequest request) {
         PostResponse post = this.postService.createPost(request);
          URI location = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -38,21 +38,21 @@ public class PostController {
                 .header("X-Request-Id", UUID.randomUUID().toString()).body(post);
     }
 
-    @GetMapping("/all/posts")
+    @GetMapping
     public ResponseEntity< List<PostResponse>> getAllPost(@RequestParam(required = false) String term) {
         List<PostResponse> posts = this.postService.getAllPosts(term);
         return ResponseEntity.ok()
                 .header("X-Request-Id", UUID.randomUUID().toString()).body(posts);
     }
 
-    @PatchMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<PostResponse> updatePostById(@PathVariable Long id,@Valid @RequestBody PostRequest request) {
         PostResponse post = this.postService.updatePost(id ,request);
         return ResponseEntity.ok()
                 .header("X-Request-Id", UUID.randomUUID().toString()).body(post);
 
     }
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<PostResponse> deletePostById(@PathVariable Long id) {
          this.postService.deletePost(id);
          return ResponseEntity.noContent().build();
