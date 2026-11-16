@@ -2,6 +2,7 @@ package com.Platform.Blogging.post;
 
 import com.Platform.Blogging.tag.Tag;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -14,6 +15,8 @@ import java.util.Set;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 public class Post {
+    public static final int TEXT_MAX = 220;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,7 +24,7 @@ public class Post {
     private String title;
     @Column(nullable = false,columnDefinition = "TEXT")
     private String content;
-    @Column(nullable = false,  length = 225)
+    @Column(nullable = false,  length = TEXT_MAX)
     private String category;
     @CreatedDate
     @Column(nullable = false, updatable = false)
@@ -35,6 +38,7 @@ public class Post {
             joinColumns = @JoinColumn(name = "post_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
+    @Size(max = 20)
     private Set<Tag> tags = new HashSet<>();
 
     protected Post() {
