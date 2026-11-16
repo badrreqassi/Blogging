@@ -24,7 +24,6 @@ public class Post {
     @Column(nullable = false, length = 150)
     private String title;
     @Column(nullable = false,columnDefinition = "TEXT")
-    @Size(max = CONTENT_MAX)
     private String content;
     @Column(nullable = false,  length = TEXT_MAX)
     private String category;
@@ -40,7 +39,6 @@ public class Post {
             joinColumns = @JoinColumn(name = "post_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
-    @Size(max = 20)
     private Set<Tag> tags = new HashSet<>();
 
     protected Post() {
