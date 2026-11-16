@@ -16,6 +16,7 @@ import java.util.Set;
 @EntityListeners(AuditingEntityListener.class)
 public class Post {
     public static final int TEXT_MAX = 220;
+    public static final int CONTENT_MAX = 10000;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +24,7 @@ public class Post {
     @Column(nullable = false, length = 150)
     private String title;
     @Column(nullable = false,columnDefinition = "TEXT")
+    @Size(max = CONTENT_MAX)
     private String content;
     @Column(nullable = false,  length = TEXT_MAX)
     private String category;
