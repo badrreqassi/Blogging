@@ -1,6 +1,8 @@
 package com.Platform.Blogging.post;
 
-public class PostNotFoundException  extends RuntimeException{
+import com.Platform.Blogging.error.notFoundException;
+
+public class PostNotFoundException  extends notFoundException {
     public PostNotFoundException(String message) { super(message); }
 
 }
